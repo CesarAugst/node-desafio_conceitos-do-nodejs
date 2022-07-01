@@ -48,6 +48,8 @@ app.post('/users', (request, response) => {
 });
 
 app.get('/todos', checksExistsUserAccount, (request, response) => {
+  const {user} = request; //pega do middleware
+  return response.status(200).json(user.todos); //retorno
 });
 
 app.post('/todos', checksExistsUserAccount, (request, response) => {
