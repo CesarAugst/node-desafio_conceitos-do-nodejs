@@ -59,8 +59,10 @@ app.post('/todos', checksExistsUserAccount, (request, response) => {
   if(title == null|| deadline == null || done == null)
   response.status(400).json({message: "faltam parametros"});//não procegue se faltar dados
 
+  const id = uuidv4(); //cria id como uuid
+
   user.todos.push({
-    title, deadline, done
+    id, title, deadline, done
   }); //acrescenta o todo
 
   return response.status(200).json({message: "Todo criado com sucesso"}); //retorno
