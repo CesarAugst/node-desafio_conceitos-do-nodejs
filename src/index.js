@@ -32,7 +32,8 @@ app.post('/users', (request, response) => {
   users.push({
     id,
     name,
-    username
+    username,
+    todos: []
   }); //faz o incremento do array
 
   return response.status(201).json({
@@ -40,7 +41,8 @@ app.post('/users', (request, response) => {
     user: {
       id,
       name,
-      username
+      username,
+      todos: []
     }
   }); //envia a resposta
 });
@@ -49,7 +51,17 @@ app.get('/todos', checksExistsUserAccount, (request, response) => {
 });
 
 app.post('/todos', checksExistsUserAccount, (request, response) => {
-  // Complete aqui
+  const { title, deadline, done } = request.body; //pega do request
+  const {user} = request; //pega user do middleware
+
+  if(title == null|| deadline == null || done == null)
+  response.status(400).json({message: "faltam parametros"});//não procegue se faltar dados
+
+  user.todos.push({
+    title, deadline, done
+  }); //acrescenta o todo
+
+  return response.status(200).json({message: "Todo criado com sucesso"}); //retorno
 });
 
 app.put('/todos/:id', checksExistsUserAccount, (request, response) => {
