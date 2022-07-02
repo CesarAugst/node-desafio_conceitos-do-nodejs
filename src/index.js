@@ -73,22 +73,43 @@ app.put('/todos/:id', checksExistsUserAccount, (request, response) => {
   const {title, deadline} = request.body; //pega atualização do request
   const { id } = request.query; //pega id do todo
 
+
   user.todos.forEach(todo => {
     if(todo.id === id){
-      todo.title = title,
-      todo.deadline = deadline
+      todo.title = title == null ? todo.title : title,
+      todo.deadline = deadline == null ? todo.deadline : deadline
     }
-  });
+  }); //altera com o parametro que veio, se veio
 
   return response.status(200).json({message: "Todo alterado com sucesso"}); //retorno
 });
 
 app.patch('/todos/:id/done', checksExistsUserAccount, (request, response) => {
-  // Complete aqui
+  const {user} = request; //pega do middleware
+  const { id } = request.params; //pega id do todo
+
+  user.todos.forEach(todo => {
+    if(todo.id === id){
+      todo.done = true
+    }
+  }); //altera para finalizado
+
+  return response.status(200).json({message: "Todo alterado com sucesso"}); //retorno
 });
 
 app.delete('/todos/:id', checksExistsUserAccount, (request, response) => {
-  // Complete aqui
+  const {user} = request; //pega do middleware
+  const { id } = request.params; //pega id do todo
+
+  user.todos.forEach(todo => {
+    var cont = 0;
+    if(todo.id === id){
+      user.todos.splice(cont, 1);
+    }
+    cont++;
+  }); //altera para finalizado
+
+  return response.status(200).json({message: "Todo excluido com sucesso"}); //retorno
 });
 
 module.exports = app;
