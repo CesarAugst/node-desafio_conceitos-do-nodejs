@@ -69,7 +69,18 @@ app.post('/todos', checksExistsUserAccount, (request, response) => {
 });
 
 app.put('/todos/:id', checksExistsUserAccount, (request, response) => {
-  // Complete aqui
+  const {user} = request; //pega do middleware
+  const {title, deadline} = request.body; //pega atualização do request
+  const { id } = request.query; //pega id do todo
+
+  user.todos.forEach(todo => {
+    if(todo.id === id){
+      todo.title = title,
+      todo.deadline = deadline
+    }
+  });
+
+  return response.status(200).json({message: "Todo alterado com sucesso"}); //retorno
 });
 
 app.patch('/todos/:id/done', checksExistsUserAccount, (request, response) => {
